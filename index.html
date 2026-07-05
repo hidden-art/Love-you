@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To the Love of My Life ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --pink: #FFD6E8;
+            --crimson: #E63946;
+            --white: #FFFFFF;
+            --purple: #8A2BE2;
+            --gold: #FFD700;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --font-romantic: 'Alex Brush', cursive;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f051d 0%, #290b3a 50%, #4a0e2e 100%);
+            color: var(--white);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 5, 29, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--crimson);
+            border-radius: 4px;
+        }
+
+        /* Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--crimson), var(--gold));
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* Floating Nav */
+        .nav-bar {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 5, 29, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 10px 25px;
+            border-radius: 30px;
+            z-index: 999;
+            display: flex;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .nav-bar a {
+            color: var(--pink);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-bar a:hover {
+            color: var(--gold);
+        }
+
+        /* Canvas Elements */
+        #canvas-ambient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Custom Cursor Trail */
+        .cursor-heart {
+            position: fixed;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: floatUpFade 1s forwards ease-out;
+            color: var(--crimson);
+            text-shadow: 0 0 5px var(--pink);
+        }
+
+        @keyframes floatUpFade {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -150%) scale(1.5); opacity: 0; }
+        }
+
+        /* Reusable Components */
+        .section {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(230, 57, 70, 0.15);
+        }
+
+        .title-romantic {
+            font-family: var(--font-romantic);
+            font-size: 4.5rem;
+            color: var(--pink);
+            text-shadow: 0 0 15px rgba(255, 214, 232, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .btn-premium {
+            background: linear-gradient(45deg, var(--crimson), var(--purple));
+            color: var(--white);
+            border: none;
+            padding: 15px 35px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-premium:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+            color: var(--gold);
+        }
+
+        /* 1. Hero Section */
+        #hero {
+            height: 100vh;
+            text-align: center;
+        }
+
+        #hero .subtitle {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--pink);
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        /* 2. Love Counter */
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        @media(min-width: 768px) {
+            .counter-grid { grid-template-columns: repeat(6, 1fr); }
+        }
+
+        .counter-box {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .counter-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        /* 3. Photo Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+            cursor: pointer;
+            border: 1px solid var(--glass-border);
+            background: #222;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* Lightbox */
+        #lightbox {
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        #lightbox img { max-width: 90%; max-height: 80vh; border-radius: 10px; }
+
+        /* 4. Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto 0;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: var(--glass-border);
+            top: 0; bottom: 0; left: 50%;
+            margin-left: -1px;
+        }
+
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            background: inherit;
+            width: 50%;
+        }
+
+        .timeline-container::after {
+            content: '❤️';
+            position: absolute;
+            right: -12px;
+            top: 15px;
+            z-index: 10;
+            font-size: 14px;
+        }
+
+        .left { left: 0; text-align: right; }
+        .right { left: 50%; text-align: left; }
+        .right::after { left: -12px; }
+
+        .timeline-content {
+            padding: 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .timeline::after { left: 31px; }
+            .timeline-container { width: 100%; padding-left: 70px; padding-right: 25px; text-align: left; }
+            .timeline-container::after { left: 21px; }
+            .left { left: 0; }
+            .right { left: 0; }
+        }
+
+        /* 5. Reasons Grid */
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        /* 6. Letter Envelope */
+        .envelope-wrapper {
+            margin-top: 40px;
+            cursor: pointer;
+            perspective: 1000px;
+        }
+
+        .envelope {
+            position: relative;
+            width: 280px;
+            height: 180px;
+            background: #e0d0b0;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.5s;
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 100px solid #cfbfa0;
+            transform-origin: top;
+            transition: transform 0.5s 0.3s;
+            z-index: 3;
+        }
+
+        .envelope.open::before {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .letter {
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            background: #fff;
+            color: #333;
+            padding: 15px;
+            border-radius: 5px;
+            transition: transform 0.5s;
+            z-index: 2;
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            overflow: hidden;
+        }
+
+        .envelope.open .letter {
+            transform: translateY(-80px);
+            z-index: 4;
+            height: auto;
+            max-height: 300px;
+            overflow-y: auto;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* 7. 100 Reasons Interactive */
+        .interactive-reason-box {
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin: 30px 0;
+            color: var(--pink);
+            font-weight: 600;
+        }
+
+        /* 8. Slider */
+        .slider-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 150px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            font-size: 1.3rem;
+        }
+
+        .slide.active { opacity: 1; }
+
+        /* 9. Music Player */
+        .music-player {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 999;
+        }
+
+        .music-btn {
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* 10. Footer */
+        footer {
+            padding: 40px;
+            text-align: center;
+            background: rgba(15, 5, 29, 0.8);
+            border-top: 1px solid var(--glass-border);
+            position: relative;
+            z-index: 2;
+        }
+
+        .heart-beat {
+            display: inline-block;
+            color: var(--crimson);
+            animation: beat 1.2s infinite;
+            font-size: 1.5rem;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scroll-progress"></div>
+    <canvas id="canvas-ambient"></canvas>
+
+    <div class="music-player">
+        <button class="music-btn" id="play-pause-btn">🎵 Play</button>
+        <span style="font-size: 0.8rem; color: var(--pink)">Our Song</span>
+    </div>
+
+    <nav class="nav-bar">
+        <a href="#hero">Us</a>
+        <a href="#counter">Time</a>
+        <a href="#gallery">Moments</a>
+        <a href="#timeline">Story</a>
+        <a href="#letter">Letter</a>
+        <a href="#surprise">Surprise</a>
+    </nav>
+
+    <section id="hero" class="section">
+        <div style="z-index: 3;">
+            <h1 class="title-romantic">To the Love of My Life ❤️</h1>
+            <p class="subtitle">Every universe brought me straight to you</p>
+            <button class="btn-premium" onclick="document.getElementById('counter').scrollIntoView()">Enter Our Love Story</button>
+        </div>
+    </section>
+
+    <section id="counter" class="section">
+        <div class="glass-card">
+            <h2 class="title-romantic" style="font-size: 3rem;">Time Spent Loving You</h2>
+            <div class="counter-grid">
+                <div class="counter-box"><div class="counter-number" id="years">00</div><div>Years</div></div>
+                <div class="counter-box"><div class="counter-number" id="months">00</div><div>Months</div></div>
+                <div class="counter-box"><div class="counter-number" id="days">00</div><div>Days</div></div>
+                <div class="counter-box"><div class="counter-number" id="hours">00</div><div>Hours</div></div>
+                <div class="counter-box"><div class="counter-number" id="minutes">00</div><div>Mins</div></div>
+                <div class="counter-box"><div class="counter-number" id="seconds">00</div><div>Secs</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="section">
+        <h2 class="title-romantic">Captured Memories</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'><rect width='100%' height='100%' fill='%234a0e2e'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23fff'>Our First Photo</text></svg>" alt="Memory 1">
+                <div class="gallery-overlay">Our First Picture Together</div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'><rect width='100%' height='100%' fill='%23290b3a'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23fff'>Late Night Walks</text></svg>" alt="Memory 2">
+                <div class="gallery-overlay">Unforgettable Adventures</div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'><rect width='100%' height='100%' fill='%238A2BE2'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23fff'>Your Beautiful Smile</text></svg>" alt="Memory 3">
+                <div class="gallery-overlay">Pure Happiness</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline" class="section">
+        <h2 class="title-romantic">Our Journey</h2>
+        <div class="timeline">
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <h3>The Day We Met</h3>
+                    <p>The moment the world completely shifted and everything started making sense.</p>
+                </div>
+            </div>
+            <div class="timeline-container right">
+                <div class="timeline-content">
+                    <h3>Our First Date</h3>
+                    <p>Laughter, butterflies, and the distinct realization that you were incredibly special.</p>
+                </div>
+            </div>
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <h3>The Spark</h3>
+                    <p>Creating inside jokes, late-night calls, and building a foundation meant to last a lifetime.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reasons" class="section">
+        <div class="glass-card">
+            <h2 class="title-romantic" style="font-size: 3rem;">Why I Cherish You</h2>
+            <div class="reasons-grid">
+                <div class="counter-box"><h3>Your Kindness</h3><p>How safely you treat my heart and everyone around you.</p></div>
+                <div class="counter-box"><h3>Your Laughter</h3><p>The purest symphony that instantly brightens up my darkest days.</p></div>
+                <div class="counter-box"><h3>Your Grace</h3><p>How you navigate life with courage, inspire me, and lift me up.</p></div>
+            </div>
+            
+            <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 40px 0;">
+            
+            <div class="slider-container">
+                <div class="slide active">"In all the world, there is no heart for me like yours." — Maya Angelou</div>
+                <div class="slide">"I love you because the entire universe conspired to help me find you." — Paulo Coelho</div>
+                <div class="slide">"Whatever our souls are made of, his and mine are the same." — Emily Brontë</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="letter" class="section">
+        <h2 class="title-romantic">A Message From My Heart</h2>
+        <div class="envelope-wrapper" onclick="toggleEnvelope(this)">
+            <div class="envelope">
+                <div class="letter">
+                    <p>My Dearest,</p><br>
+                    <p>Writing this down will never fully capture the depths of what I feel for you. You are my safe harbor, my greatest adventure, and my absolute favorite person. Thank you for being uniquely you, and for sharing your life with mine.</p><br>
+                    <p>Forever and always yours.</p>
+                </div>
+            </div>
+        </div>
+        <p style="margin-top: 20px; font-size: 0.9rem; color: var(--pink);">(Click the envelope to open)</p>
+    </section>
+
+       <section id="reasons100" class="section">
+        <div class="glass-card">
+            <h2 class="title-romantic" style="font-size: 3rem;">Reasons I Love You</h2>
+            <div class="interactive-reason-box" id="reason-display">
+                Click below to begin exploring my heart...
+            </div>
+            <button class="btn-premium" onclick="nextReason()">Reveal Next Reason</button>
+        </div>
+    </section>
+
+    <section id="dreams" class="section">
+        <div class="glass-card">
+            <h2 class="title-romantic">Our Future Together</h2>
+            <p style="margin-bottom: 30px;">The road ahead looks breathtakingly beautiful because I'm walking it hand-in-hand with you.</p>
+            <div class="reasons-grid">
+                <div class="counter-box"><span style="font-size:2rem;">✈️</span><h3>New Horizons</h3><p>Exploring hidden corners of the world together.</p></div>
+                <div class="counter-box"><span style="font-size:2rem;">🏡</span><h3>Our Sanctuary</h3><p>Building a warm, quiet home filled with love and laughter.</p></div>
+                <div class="counter-box"><span style="font-size:2rem;">☕</span><h3>Growing Old</h3><p>Sharing quiet morning coffees decades down the line.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="surprise" class="section">
+        <div class="glass-card" style="border-color: var(--gold);">
+            <h2 class="title-romantic">A Final Surprise</h2>
+            <p style="margin-bottom: 30px;">A celebration of our love that will never fade away.</p>
+            <button class="btn-premium" id="surprise-btn" onclick="triggerSurprise()">Click for a Surprise ❤️</button>
+            <h1 id="surprise-text" class="title-romantic" style="display:none; margin-top:30px; font-size: 5rem; animation: beat 1.5s infinite;">I Love You Forever ❤️</h1>
+        </div>
+    </section>
+
+    <div id="lightbox" onclick="this.style.display='none'">
+        <img id="lightbox-img" src="" alt="Enlarged view">
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <footer>
+        <p>Forever Yours <span class="heart-beat">❤️</span></p>
+    </footer>
+
+    <script>
+        // --- 1. Ambient Background Particles, Hearts & Petals ---
+        const canvas = document.getElementById('canvas-ambient');
+        const ctx = canvas.getContext('2d');
+        let elements = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class AmbientElement {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * canvas.height;
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + 20;
+                this.size = Math.random() * 12 + 6;
+                this.speedY = Math.random() * 1.2 + 0.4;
+                this.speedX = Math.sin(Math.random() * 2) * 0.5;
+                this.type = Math.random() > 0.6 ? 'heart' : 'petal';
+                this.alpha = Math.random() * 0.5 + 0.3;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 1 - 0.5;
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotationSpeed;
+                if (this.y < -20) this.reset();
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.globalAlpha = this.alpha;
+                
+                if (this.type === 'heart') {
+                    ctx.fillStyle = '#E63946';
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.bezierCurveTo(-this.size/2, -this.size/2, -this.size, 0, 0, this.size);
+                    ctx.bezierCurveTo(this.size, 0, this.size/2, -this.size/2, 0, 0);
+                    ctx.fill();
+                } else {
+                    ctx.fillStyle = '#FFD6E8';
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, this.size, this.size/2, Math.PI/4, 0, 2*Math.PI);
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+        }
+
+        function initParticles() {
+            for(let i = 0; i < 40; i++) {
+                elements.push(new AmbientElement());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            elements.forEach(el => {
+                el.update();
+                el.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        initParticles();
+        animateParticles();
+
+        // --- 2. Interactive Cursor Trail ---
+        window.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.8) {
+                const heart = document.createElement('div');
+                heart.className = 'cursor-heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = e.clientX + 'px';
+                heart.style.top = e.clientY + 'px';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 1000);
+            }
+        });
+
+        // --- 3. Scroll Progress Indicator ---
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scroll-progress').style.width = scrolled + '%';
+        });
+
+        // --- 4. Relationship Live Counter ---
+        // SET YOUR START DATE HERE (Year, Month Index (0-11), Day, Hours, Minutes)
+        const startDate = new Date(2023, 0, 1, 0, 0); 
+
+        function updateCounter() {
+            const now = new Date();
+            let diff = now - startDate;
+
+            const seconds = Math.floor((diff / 1000) % 60);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            
+            // Approximate breakdown for clean layouts
+            const daysTotal = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const years = Math.floor(daysTotal / 365);
+            const months = Math.floor((daysTotal % 365) / 30);
+            const days = Math.floor((daysTotal % 365) % 30);
+
+            document.getElementById('years').innerText = String(years).padStart(2, '0');
+            document.getElementById('months').innerText = String(months).padStart(2, '0');
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+        setInterval(updateCounter, 1000);
+        updateCounter();
+
+        // --- 5. Lightbox ---
+        function openLightbox(element) {
+            const img = element.querySelector('img');
+            document.getElementById('lightbox-img').src = img.src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        // --- 6. Letter Envelope Toggle ---
+        function toggleEnvelope(element) {
+            element.querySelector('.envelope').classList.toggle('open');
+        }
+
+        // --- 7. 100 Reasons Generator ---
+        const romanticReasons = [
+            "The comforting way you look at me when you smile.",
+            "How safe and secure I feel whenever you hold my hand.",
+            "Your unwavering kindness and how deeply you care for others.",
+            "The way you genuinely remember the small, subtle details about me.",
+            "Your beautiful laugh that easily sweeps away my hardest days.",
+            "How completely ambitious, driven, and passionate you are about life.",
+            "The warm, calming feeling of waking up knowing I have you.",
+            "Your infinite patience even when things get overwhelming.",
+            "The beautiful way our hands fit perfectly together.",
+            "How you inspire me daily to grow into a much better person."
+        ]; // Feel free to expand this array to include up to 100 unique personalized items
+        
+        let reasonIndex = 0;
+        function nextReason() {
+            const display = document.getElementById('reason-display');
+            display.style.opacity = 0;
+            setTimeout(() => {
+                display.innerText = romanticReasons[reasonIndex];
+                display.style.opacity = 1;
+                reasonIndex = (reasonIndex + 1) % romanticReasons.length;
+            }, 300);
+        }
+
+        // --- 8. Quote Carousel ---
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 4000);
+
+        // --- 9. Music Interaction Layer ---
+        const music = document.getElementById('bg-music');
+        const playBtn = document.getElementById('play-pause-btn');
+
+        function togglePlay() {
+            if (music.paused) {
+                music.play().catch(e => console.log("Autoplay blocked until interaction"));
+                playBtn.innerText = "⏸️ Pause";
+            } else {
+                music.pause();
+                playBtn.innerText = "🎵 Play";
+            }
+        }
+        playBtn.addEventListener('click', togglePlay);
+        // Fallback interaction rule to safely trigger music stream
+        window.addEventListener('click', () => {
+            if(music.paused && playBtn.innerText === "🎵 Play") {
+                // Keep paused unless user specifically wants interaction
+            }
+        }, { once: true });
+
+             // --- 10. Cinematic Celebration Surprise ---
+        function triggerSurprise() {
+            document.getElementById('surprise-btn').style.display = 'none';
+            const text = document.getElementById('surprise-text');
+            text.style.display = 'block';
+            
+            // Intensify background particles dynamically
+            for(let i=0; i<60; i++) {
+                setTimeout(() => {
+                    let burstItem = new AmbientElement();
+                    burstItem.y = canvas.height / 2 + (Math.random() * 100 - 50);
+                    burstItem.x = canvas.width / 2 + (Math.random() * 100 - 50);
+                    burstItem.speedY = Math.random() * 4 - 2;
+                    burstItem.speedX = Math.random() * 4 - 2;
+                    burstItem.alpha = 1;
+                    elements.push(burstItem);
+                }, i * 30);
+            }
+        }
+    </script>
+</body>
+</html>
